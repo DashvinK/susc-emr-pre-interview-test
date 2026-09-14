@@ -24,7 +24,7 @@
   .mono{ font-family:"IBM Plex Mono","Courier New",monospace; }
 
   /* Header band */
-  header{ background:var(--navy-900); color:#fff; padding:9mm 12mm 7mm; }
+  header{ background:var(--navy-900); color:#fff; padding:8mm 12mm 6mm; }
   .brand{ display:table; width:100%; }
   .brand .name{ display:table-cell; text-align:left; vertical-align:baseline;
     font-family:"Fraunces","Georgia",serif; font-size:12pt; letter-spacing:.02em; }
@@ -38,19 +38,21 @@
     font-size:8pt; color:#C9CFDD; }
   .who .meta b{ color:#fff; font-weight:500; }
 
-  .body{ padding:7mm 12mm 0; }
-  h2{ font-family:"Fraunces",serif; font-size:11pt; color:var(--navy-900); margin:0 0 3mm; }
-  section{ margin-top:6mm; }
+  .body{ padding:6mm 12mm 0; }
+  h2{ font-family:"Fraunces",serif; font-size:11pt; color:var(--navy-900); margin:0 0 2.5mm; }
+  section{ margin-top:4.5mm; }
   section.first{ margin-top:0; }
 
-  /* Big Five — CSS table: name | bar | value */
-  .trait{ display:table; width:100%; margin:1.7mm 0; }
-  .trait .tname{ display:table-cell; width:34mm; vertical-align:middle; font-size:9pt; }
-  .trait .bar{ display:table-cell; vertical-align:middle; padding:0 4mm; }
+  /* Big Five — fixed CSS table: name | bar | value.
+     table-layout:fixed is essential — WeasyPrint's auto layout otherwise
+     collapses the bar column to zero width. */
+  .trait{ display:table; width:100%; table-layout:fixed; margin:1.6mm 0; }
+  .trait .tname{ display:table-cell; width:37mm; vertical-align:middle; font-size:9pt; }
+  .trait .bar{ display:table-cell; width:auto; vertical-align:middle; padding:0 3mm; }
   .trait .groove{ display:block; width:100%; height:3pt; background:var(--track); border-radius:2pt; }
   .trait .fill{ display:block; height:3pt; background:var(--gold-500); border-radius:2pt; }
-  .trait .val{ display:table-cell; width:24mm; text-align:right; vertical-align:middle;
-    font-family:"IBM Plex Mono",monospace; font-size:8.5pt; }
+  .trait .val{ display:table-cell; width:25mm; text-align:right; vertical-align:middle;
+    font-family:"IBM Plex Mono",monospace; font-size:8.5pt; white-space:nowrap; }
   .trait .val b{ color:var(--ink); }
   .trait .val .band{ color:var(--navy-700); }
 
@@ -67,18 +69,18 @@
   .prose{ font-size:9pt; margin:0; }
 
   /* Section C */
-  .qa{ margin-top:2.5mm; padding-left:3mm; border-left:1.5pt solid var(--line-strong); }
+  .qa{ margin-top:2mm; padding-left:3mm; border-left:1.5pt solid var(--line-strong); }
   .qa .q{ font-size:7.5pt; letter-spacing:.04em; text-transform:uppercase;
     color:var(--navy-700); font-family:"IBM Plex Mono",monospace; }
   .qa .a{ font-size:8.5pt; margin-top:.6mm; }
   .qa .a.empty{ color:var(--line-strong); font-style:italic; }
-  .note{ margin-top:3mm; background:var(--paper); border:1pt solid var(--line);
-    border-radius:3pt; padding:3mm 3.5mm; font-size:8.5pt; }
+  .note{ margin-top:2mm; background:var(--paper); border:1pt solid var(--line);
+    border-radius:3pt; padding:2.5mm 3mm; font-size:8.5pt; }
   .note .lbl{ font-size:7.5pt; letter-spacing:.06em; text-transform:uppercase;
     color:var(--gold-700); font-family:"IBM Plex Mono",monospace; margin-bottom:1mm; }
 
   /* Panel footer */
-  .panel{ margin:6mm 12mm 0; padding-top:4mm; border-top:1.5pt solid var(--line); }
+  .panel{ margin:4.5mm 12mm 0; padding-top:3mm; border-top:1.5pt solid var(--line); }
   .panel .lbl{ font-size:7.5pt; letter-spacing:.06em; text-transform:uppercase;
     color:var(--navy-700); font-family:"IBM Plex Mono",monospace; }
   .panel ul{ margin:2mm 0 0; padding-left:4.5mm; font-size:8.5pt; }

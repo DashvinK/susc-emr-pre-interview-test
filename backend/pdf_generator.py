@@ -18,8 +18,9 @@ _env = Environment(
 )
 
 # Keep written answers compact so the summary stays on one A4 page; the full text
-# always lives in the Responses sheet.
-_ANSWER_CLIP = 320
+# always lives in the database. These caps bound the worst-case page height.
+_ANSWER_CLIP = 210
+_SUMMARY_CLIP = 680  # fit_summary / c_review ceiling
 
 _C_QUESTIONS = [
     "A time you failed or fell short",
@@ -98,8 +99,8 @@ def build_context(
         "attention_flag": score.attention_flag,
         "rush_flag": score.rush_flag,
         "avg_ms": score.avg_ms,
-        "fit_summary": fit_summary,
-        "c_review": c_review,
+        "fit_summary": _clip(fit_summary, _SUMMARY_CLIP),
+        "c_review": _clip(c_review, _SUMMARY_CLIP),
         "written": written_items,
         "panel_prompts": _panel_prompts(score),
     }
