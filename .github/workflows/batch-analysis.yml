@@ -1,0 +1,44 @@
+name: Batch analysis
+
+# Scores unprocessed submissions, generates PDFs, and writes results to Supabase.
+on:
+  schedule:
+    - cron: "*/20 * * * *" # every 20 minutes (GitHub may delay under load)
+  workflow_dispatch: {} # allow manual runs from the Actions tab
+
+concurrency:
+  group: batch-analysis
+  cancel-in-progress: false # never run two batches at once
+
+jobs:
+  batch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      # WeasyPrint native libraries + brand body font (Fraunces falls back to serif).
+      - name: Install system libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf-2.0-0 \
+            libffi-dev libcairo2 fonts-ibm-plex
+
+      - name: Install Python dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Run batch analysis
+        working-directory: backend
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_MODEL: ${{ vars.GROQ_MODEL || 'llama-3.1-8b-instant' }}
+          RUSH_THRESHOLD_MS: ${{ vars.RUSH_THRESHOLD_MS || '1500' }}
+        run: python run_batch.py

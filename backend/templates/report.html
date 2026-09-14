@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  /* SUSC EMR candidate summary — one A4 page.
+     Tokens mirror docs/design/brand-kit-refined.html. Fonts fall back to system
+     serif/sans/mono if Fraunces / IBM Plex are not installed on the host. */
+  :root{
+    --navy-900:#0E1F3B; --navy-700:#1E3A66;
+    --gold-500:#C9A227; --gold-700:#8A6A16;
+    --paper:#FAF9F6; --ink:#10192B;
+    --line:#D9DEE7; --line-strong:#C3CAD6; --track:#E7E3D8;
+    --pass-bg:#EAF3EA; --pass-fg:#2C5F3E; --flag-bg:#FBF1DC; --flag-fg:#8A6A16;
+  }
+  @page{ size:A4; margin:0; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+    color:var(--ink); font-size:9.5pt; line-height:1.42;
+    background:#fff;
+  }
+  .display{ font-family:"Fraunces","Georgia",serif; }
+  .mono{ font-family:"IBM Plex Mono","Courier New",monospace; }
+  .page{ padding:0 0 14mm; }
+
+  /* Header band */
+  header{ background:var(--navy-900); color:#fff; padding:9mm 12mm 7mm; }
+  .brand{ display:flex; justify-content:space-between; align-items:baseline; }
+  .brand .name{ font-family:"Fraunces",serif; font-size:12pt; letter-spacing:.02em; }
+  .brand .doc{ font-size:7.5pt; letter-spacing:.16em; text-transform:uppercase; color:#C9CFDD; font-family:"IBM Plex Mono",monospace; }
+  .who{ margin-top:5mm; display:flex; justify-content:space-between; align-items:flex-end; }
+  .who .cand{ font-family:"Fraunces",serif; font-size:19pt; line-height:1.05; }
+  .who .meta{ text-align:right; font-size:8pt; color:#C9CFDD; }
+  .who .meta b{ color:#fff; font-weight:500; }
+
+  .body{ padding:7mm 12mm 0; }
+  h2{ font-family:"Fraunces",serif; font-size:11pt; color:var(--navy-900); margin:0 0 3mm; }
+  section{ margin-top:6mm; }
+  section:first-child{ margin-top:0; }
+
+  /* Big Five — the reading track reused */
+  .trait{ display:flex; align-items:center; gap:4mm; padding:1.6mm 0; }
+  .trait .tname{ width:34mm; font-size:9pt; }
+  .trait .ttrack{ position:relative; flex:1; height:5mm; }
+  .trait .groove{ position:absolute; left:0; right:0; top:50%; height:2.2pt; background:var(--track); border-radius:2pt; transform:translateY(-50%); }
+  .trait .fill{ position:absolute; left:0; top:50%; height:2.2pt; background:var(--navy-700); border-radius:2pt; transform:translateY(-50%); }
+  .trait .marker{ position:absolute; top:50%; width:2.9mm; height:2.9mm; border-radius:50%; background:var(--gold-500); border:1.2pt solid #fff; box-shadow:0 0 0 .6pt var(--line-strong); transform:translate(-50%,-50%); }
+  .trait .val{ width:22mm; text-align:right; font-family:"IBM Plex Mono",monospace; font-size:8.5pt; }
+  .trait .val b{ color:var(--ink); }
+  .trait .val .band{ color:var(--navy-700); }
+
+  /* Flags */
+  .flags{ display:flex; gap:4mm; }
+  .badge{ display:inline-flex; align-items:center; gap:1.6mm; font-size:8pt; font-weight:500; padding:1.4mm 3mm; border-radius:20pt; }
+  .badge .dot{ width:1.6mm; height:1.6mm; border-radius:50%; background:currentColor; }
+  .badge-pass{ background:var(--pass-bg); color:var(--pass-fg); }
+  .badge-flag{ background:var(--flag-bg); color:var(--flag-fg); }
+  .flags .hint{ font-size:7.5pt; color:var(--navy-700); align-self:center; }
+
+  .prose{ font-size:9pt; margin:0; }
+
+  /* Section C */
+  .qa{ margin-top:2.5mm; padding-left:3mm; border-left:1.5pt solid var(--line-strong); }
+  .qa .q{ font-size:7.5pt; letter-spacing:.04em; text-transform:uppercase; color:var(--navy-700); font-family:"IBM Plex Mono",monospace; }
+  .qa .a{ font-size:8.5pt; margin-top:.6mm; }
+  .qa .a.empty{ color:var(--line-strong); font-style:italic; }
+  .note{ margin-top:3mm; background:var(--paper); border:1pt solid var(--line); border-radius:3pt; padding:3mm 3.5mm; font-size:8.5pt; }
+  .note .lbl{ font-size:7.5pt; letter-spacing:.06em; text-transform:uppercase; color:var(--gold-700); font-family:"IBM Plex Mono",monospace; margin-bottom:1mm; }
+
+  /* Panel footer */
+  .panel{ margin:6mm 12mm 0; padding-top:4mm; border-top:1.5pt solid var(--line); }
+  .panel .lbl{ font-size:7.5pt; letter-spacing:.06em; text-transform:uppercase; color:var(--navy-700); font-family:"IBM Plex Mono",monospace; }
+  .panel ul{ margin:2mm 0 0; padding-left:4.5mm; font-size:8.5pt; }
+  .panel li{ margin-bottom:1mm; }
+  .panel .disclaimer{ margin-top:3mm; font-size:7.5pt; color:var(--navy-700); font-style:italic; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="brand">
+      <span class="name">SUSC EMR</span>
+      <span class="doc">Pre-Interview Summary</span>
+    </div>
+    <div class="who">
+      <div class="cand">{{ name }}</div>
+      <div class="meta">
+        <div>Student ID <b class="mono">{{ student_id }}</b></div>
+        <div class="mono">{{ timestamp }}</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="body">
+
+    <section>
+      <h2>Big Five snapshot</h2>
+      {% for t in traits %}
+      <div class="trait">
+        <span class="tname">{{ t.name }}</span>
+        <span class="ttrack">
+          <span class="groove"></span>
+          <span class="fill" style="width:{{ t.pct }}%"></span>
+          <span class="marker" style="left:{{ t.pct }}%"></span>
+        </span>
+        <span class="val"><b>{{ "%.1f"|format(t.score) }}</b> <span class="band">{{ t.band }}</span></span>
+      </div>
+      {% endfor %}
+    </section>
+
+    <section>
+      <h2>Flags</h2>
+      <div class="flags">
+        {% if attention_flag == "pass" %}
+        <span class="badge badge-pass"><span class="dot"></span>Attention check passed</span>
+        {% else %}
+        <span class="badge badge-flag"><span class="dot"></span>Attention check missed</span>
+        {% endif %}
+        {% if rush_flag == "pass" %}
+        <span class="badge badge-pass"><span class="dot"></span>Pace normal</span>
+        {% else %}
+        <span class="badge badge-flag"><span class="dot"></span>Rushed pace</span>
+        {% endif %}
+        <span class="hint mono">avg {{ avg_ms|int }} ms/item</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>SUSC fit</h2>
+      <p class="prose">{{ fit_summary }}</p>
+    </section>
+
+    <section>
+      <h2>Written answers &amp; consistency</h2>
+      {% for w in written %}
+      <div class="qa">
+        <div class="q">{{ loop.index }} · {{ w.q }}</div>
+        {% if w.a %}
+        <div class="a">{{ w.a }}</div>
+        {% else %}
+        <div class="a empty">No answer provided.</div>
+        {% endif %}
+      </div>
+      {% endfor %}
+      <div class="note">
+        <div class="lbl">Consistency note</div>
+        {{ c_review }}
+      </div>
+    </section>
+
+  </div>
+
+  <div class="panel">
+    <div class="lbl">Discussion aid for the panel</div>
+    <ul>
+      {% for p in panel_prompts %}
+      <li>{{ p }}</li>
+      {% endfor %}
+    </ul>
+    <div class="disclaimer">
+      A conversation aid, not a verdict. Scores summarise self-reported answers and
+      should be explored — not relied on — in the interview.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

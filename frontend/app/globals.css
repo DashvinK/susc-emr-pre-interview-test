@@ -1,0 +1,321 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  SUSC EMR design system — refined.
+  Fonts (Fraunces / IBM Plex Sans / IBM Plex Mono) are loaded via next/font in
+  app/layout.tsx and exposed as --font-fraunces / --font-plex-sans / --font-plex-mono.
+  Source of truth for tokens & the "reading track": docs/design/brand-kit-refined.html
+*/
+
+@layer base {
+  :root {
+    /* Structure + action */
+    --navy-900: #0e1f3b;
+    --navy-700: #1e3a66;
+    /* Gold, two roles */
+    --gold-500: #c9a227; /* SIGNAL only */
+    --gold-700: #8a6a16; /* INTERACTIVE on light */
+    /* Surfaces + content */
+    --paper: #faf9f6;
+    --surface: #ffffff;
+    --ink: #10192b;
+    --line: #d9dee7;
+    --line-strong: #c3cad6;
+
+    /* Semantic (light) */
+    --bg: var(--paper);
+    --fg: var(--ink);
+    --fg-2: var(--navy-700);
+    --heading: var(--navy-900);
+    --accent: var(--gold-700); /* interactive */
+    --signal: var(--gold-500); /* graphic */
+    --track: #e7e3d8; /* reading-track groove on light */
+    --pass-bg: #eaf3ea;
+    --pass-fg: #2c5f3e;
+    --flag-bg: #fbf1dc;
+    --flag-fg: #8a6a16;
+  }
+
+  :root[data-theme="dark"] {
+    --surface: #101e36;
+    --line: #26314a;
+    --line-strong: #33405e;
+    --bg: #0a1424;
+    --fg: #eaeef6;
+    --fg-2: #a9b6cd;
+    --heading: #eaeef6;
+    --accent: #e0b94a;
+    --signal: #e0b94a;
+    --track: #243049;
+    --pass-bg: #16301f;
+    --pass-fg: #8fd0a3;
+    --flag-bg: #33280c;
+    --flag-fg: #e9c979;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --surface: #101e36;
+      --line: #26314a;
+      --line-strong: #33405e;
+      --bg: #0a1424;
+      --fg: #eaeef6;
+      --fg-2: #a9b6cd;
+      --heading: #eaeef6;
+      --accent: #e0b94a;
+      --signal: #e0b94a;
+      --track: #243049;
+      --pass-bg: #16301f;
+      --pass-fg: #8fd0a3;
+      --flag-bg: #33280c;
+      --flag-fg: #e9c979;
+    }
+  }
+
+  html {
+    font-size: 16px;
+  }
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-plex-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-fraunces), Georgia, serif;
+    color: var(--heading);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .font-mono,
+  .mono {
+    font-family: var(--font-plex-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Global focus ring — the single interactive gold, everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .surface {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  /* Kicker / eyebrow */
+  .kicker {
+    font-family: var(--font-plex-mono), monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* Buttons — style, not size, marks the primary. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    font-family: var(--font-plex-sans), sans-serif;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    min-height: 2.75rem; /* 44pt */
+    padding: 0.7rem 1.4rem;
+    border-radius: theme("borderRadius.DEFAULT");
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.12s ease, opacity 0.12s ease;
+  }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background-color: var(--navy-900);
+    color: #ffffff;
+  }
+  .btn-primary:not(:disabled):hover {
+    background-color: var(--navy-700);
+  }
+  /* Dark: navy has too little contrast against the dark ground, so invert the
+     primary to a light fill with dark text (the standard CTA inversion). */
+  :root[data-theme="dark"] .btn-primary,
+  :root:not([data-theme="light"]) .btn-primary {
+    background-color: #eaeef6;
+    color: #0a1424;
+  }
+  :root[data-theme="dark"] .btn-primary:not(:disabled):hover,
+  :root:not([data-theme="light"]) .btn-primary:not(:disabled):hover {
+    background-color: #d5dbe8;
+  }
+  .btn-secondary {
+    background-color: transparent;
+    color: var(--fg);
+    border-color: var(--line-strong);
+  }
+  .btn-secondary:not(:disabled):hover {
+    border-color: var(--fg-2);
+  }
+
+  /* Text inputs */
+  .input-text {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--line-strong);
+    border-radius: theme("borderRadius.DEFAULT");
+    background-color: var(--surface);
+    color: var(--fg);
+    font-family: var(--font-plex-sans), sans-serif;
+    font-size: 0.9375rem;
+  }
+  .input-text::placeholder {
+    color: var(--fg-2);
+    opacity: 0.7;
+  }
+  .input-text:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-color: var(--accent);
+  }
+
+  /* Status badges — state via icon + text + color, never color alone. */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    padding: 0.3rem 0.7rem;
+    border-radius: 99px;
+  }
+  .badge-pass {
+    background-color: var(--pass-bg);
+    color: var(--pass-fg);
+  }
+  .badge-flag {
+    background-color: var(--flag-bg);
+    color: var(--flag-fg);
+  }
+
+  /* ===== The reading track (signature) ===== */
+
+  /* Likert input */
+  .rt-track {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1 1 auto;
+  }
+  .rt-track::before {
+    content: "";
+    position: absolute;
+    left: 1.375rem;
+    right: 1.375rem;
+    top: 50%;
+    height: 2px;
+    background-color: var(--track);
+    transform: translateY(-50%);
+  }
+  .rt-node {
+    position: relative;
+    width: 2.75rem; /* 44pt hit target */
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  .rt-dot {
+    width: 1.375rem;
+    height: 1.375rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--navy-700);
+    background-color: var(--surface);
+    transition: transform 0.12s ease, background-color 0.12s ease,
+      border-color 0.12s ease;
+  }
+  :root[data-theme="dark"] .rt-dot,
+  :root:not([data-theme="light"]) .rt-dot {
+    border-color: var(--fg-2);
+  }
+  .rt-node[aria-checked="true"] .rt-dot {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    transform: scale(1.14);
+  }
+  .rt-vlabel {
+    position: absolute;
+    bottom: -1.05rem;
+    font-family: var(--font-plex-mono), monospace;
+    font-size: 0.625rem;
+    color: var(--fg-2);
+  }
+  .rt-end {
+    flex: 0 0 auto;
+    width: 4.5rem;
+    font-size: 0.75rem;
+    color: var(--fg-2);
+  }
+
+  /* Progress rail — same track family */
+  .rail {
+    height: 4px;
+    background-color: var(--track);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .rail-fill {
+    height: 100%;
+    background-color: var(--signal);
+    transition: width 0.25s ease;
+  }
+
+  /* Big Five readout — track reused as results */
+  .trait-track {
+    position: relative;
+    height: 1.375rem;
+    display: flex;
+    align-items: center;
+  }
+  .trait-groove {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 99px;
+    background-color: var(--track);
+  }
+  .trait-marker {
+    position: absolute;
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    background-color: var(--signal);
+    border: 2px solid var(--surface);
+    box-shadow: 0 0 0 1px var(--line-strong);
+    transform: translateX(-50%);
+  }
+}
+
+/* Respect reduced-motion: drop the settle + rail animations. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

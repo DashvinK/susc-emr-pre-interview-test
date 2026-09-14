@@ -1,0 +1,17 @@
+[
+  {"id": "csn1", "trait": "CSN", "reverse": false, "text": "I follow through on tasks I commit to for SUSC, even when no one is checking up on me."},
+  {"id": "csn2", "trait": "CSN", "reverse": false, "text": "I pay close attention to detail when preparing for events or tasks."},
+  {"id": "csn3", "trait": "CSN", "reverse": true,  "text": "I sometimes leave things until the last minute."},
+  {"id": "csn4", "trait": "CSN", "reverse": false, "text": "I get things done and submitted on time."},
+  {"id": "csn5", "trait": "CSN", "reverse": true,  "text": "I often forget to follow up on things I said I'd do."},
+  {"id": "est1", "trait": "EST", "reverse": false, "text": "A failed event or rejected idea doesn't stop me from trying again."},
+  {"id": "est2", "trait": "EST", "reverse": true,  "text": "I get stressed out easily when things don't go as planned."},
+  {"id": "est3", "trait": "EST", "reverse": true,  "text": "I take setbacks personally and it affects my mood for a while."},
+  {"id": "est4", "trait": "EST", "reverse": false, "text": "I stay calm even when there's a lot of pressure before an event."},
+  {"id": "opn1", "trait": "OPN", "reverse": false, "text": "I actively look for ways to learn and improve, even outside my comfort zone."},
+  {"id": "opn2", "trait": "OPN", "reverse": false, "text": "I enjoy tackling problems I haven't dealt with before."},
+  {"id": "opn3", "trait": "OPN", "reverse": true,  "text": "I prefer sticking to familiar tasks rather than trying new approaches."},
+  {"id": "opn4", "trait": "OPN", "reverse": false, "text": "I have plenty of ideas for how things could be done better."},
+  {"id": "ext1", "trait": "EXT", "reverse": false, "text": "I'm comfortable speaking up and taking the lead in group settings."},
+  {"id": "agr1", "trait": "AGR", "reverse": false, "text": "I make people around me feel comfortable working with me."}
+]
