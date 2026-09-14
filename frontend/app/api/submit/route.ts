@@ -7,10 +7,20 @@ import { SubmissionSchema } from "@/lib/validation";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// Accept the bare project URL even if someone pasted the REST endpoint or a
+// trailing slash (https://ref.supabase.co/rest/v1 → https://ref.supabase.co).
+function normalizeSupabaseUrl(u: string): string {
+  return u
+    .trim()
+    .replace(/\/+$/, "")
+    .replace(/\/rest\/v1$/, "")
+    .replace(/\/+$/, "");
+}
+
 export async function POST(request: Request) {
-  const url = process.env.SUPABASE_URL;
+  const rawUrl = process.env.SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !serviceKey) {
+  if (!rawUrl || !serviceKey) {
     return NextResponse.json(
       { detail: "Server is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY." },
       { status: 500 }
@@ -34,6 +44,7 @@ export async function POST(request: Request) {
   const s = parsed.data;
 
   // Service-role client bypasses RLS; this key is server-only.
+  const url = normalizeSupabaseUrl(rawUrl);
   const supabase = createClient(url, serviceKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });

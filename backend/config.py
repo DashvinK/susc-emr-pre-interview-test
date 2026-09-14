@@ -17,8 +17,17 @@ def _get(key: str, default: str | None = None) -> str:
     return os.getenv(key, default) or ""
 
 
+def _normalize_supabase_url(u: str) -> str:
+    # Accept the bare project URL even if the REST endpoint or a trailing slash
+    # was pasted (https://ref.supabase.co/rest/v1 -> https://ref.supabase.co).
+    u = u.strip().rstrip("/")
+    if u.endswith("/rest/v1"):
+        u = u[: -len("/rest/v1")]
+    return u.rstrip("/")
+
+
 # --- Supabase ---
-SUPABASE_URL = _get("SUPABASE_URL")
+SUPABASE_URL = _normalize_supabase_url(_get("SUPABASE_URL"))
 SUPABASE_SERVICE_ROLE_KEY = _get("SUPABASE_SERVICE_ROLE_KEY")
 REPORTS_BUCKET = _get("REPORTS_BUCKET", "reports")
 # Expiry (seconds) for the signed PDF URLs stored in results.pdf_url. Default 1 year.
@@ -26,7 +35,7 @@ SIGNED_URL_TTL = int(_get("SIGNED_URL_TTL", str(60 * 60 * 24 * 365)))
 
 # --- LLM (Groq) ---
 GROQ_API_KEY = _get("GROQ_API_KEY")
-GROQ_MODEL = _get("GROQ_MODEL", "llama-3.1-8b-instant")
+GROQ_MODEL = _get("GROQ_MODEL", "llama-3.3-70b-versatile")
 
 # --- Scoring / behaviour thresholds ---
 RUSH_THRESHOLD_MS = int(_get("RUSH_THRESHOLD_MS", "1500"))
