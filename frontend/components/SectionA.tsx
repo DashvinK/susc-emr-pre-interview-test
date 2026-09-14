@@ -59,7 +59,7 @@ export default function SectionA({ data, onChange }: SectionAProps) {
             type="text"
             inputMode="numeric"
             autoComplete="off"
-            maxLength={6}
+            maxLength={8}
             placeholder="e.g. 21045678"
             value={data.studentId}
             onChange={(e) => handleId(e.target.value)}
@@ -72,7 +72,7 @@ export default function SectionA({ data, onChange }: SectionAProps) {
             className="text-xs mt-1.5"
             style={{ color: showIdError ? "var(--flag-fg)" : "var(--fg-2)" }}
           >
-            {showIdError ? "Student ID must be exactly 6 digits." : "6 digits."}
+            {showIdError ? "Student ID must be exactly 8 digits." : "8 digits."}
           </p>
         </div>
       </div>

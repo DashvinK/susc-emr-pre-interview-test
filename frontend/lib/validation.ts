@@ -8,7 +8,7 @@ export const SubmissionSchema = z.object({
   student_id: z
     .string()
     .trim()
-    .regex(/^\d{6}$/, "Student ID must be exactly 6 digits"),
+    .regex(/^\d{8}$/, "Student ID must be exactly 8 digits"),
   answers: z
     .array(
       z.object({
