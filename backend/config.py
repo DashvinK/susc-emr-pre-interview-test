@@ -35,7 +35,7 @@ SIGNED_URL_TTL = int(_get("SIGNED_URL_TTL", str(60 * 60 * 24 * 365)))
 
 # --- LLM (Groq) ---
 GROQ_API_KEY = _get("GROQ_API_KEY")
-GROQ_MODEL = _get("GROQ_MODEL", "llama-3.3-70b-versatile")
+GROQ_MODEL = _get("GROQ_MODEL", "openai/gpt-oss-120b")
 
 # --- Scoring / behaviour thresholds ---
 RUSH_THRESHOLD_MS = int(_get("RUSH_THRESHOLD_MS", "1500"))
