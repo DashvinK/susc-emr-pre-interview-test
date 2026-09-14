@@ -44,9 +44,10 @@ class SupabaseClient:
 
     # --- storage ---
 
-    def upload_pdf(self, local_path: Path, submission_id: str) -> tuple[str, str]:
-        """Upload the PDF to the reports bucket; return (storage_path, signed_url)."""
-        storage_path = f"{submission_id}.pdf"
+    def upload_pdf(self, local_path: Path, object_base: str) -> tuple[str, str]:
+        """Upload the PDF to the reports bucket under <object_base>.pdf;
+        return (storage_path, signed_url)."""
+        storage_path = f"{object_base}.pdf"
         data = local_path.read_bytes()
         self._c.storage.from_(config.REPORTS_BUCKET).upload(
             storage_path,

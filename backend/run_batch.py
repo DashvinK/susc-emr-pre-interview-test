@@ -9,6 +9,7 @@ Run:  python run_batch.py
 from __future__ import annotations
 
 import logging
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -24,6 +25,19 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)s %(name)s: %(message)s",
 )
 logger = logging.getLogger("emr.batch")
+
+
+def _sanitize(text: str) -> str:
+    """Strip path separators and reserved/control characters for storage safety."""
+    text = re.sub(r'[\\/:*?"<>|\x00-\x1f]', "", (text or "").strip())
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _report_basename(name: str, student_id: str) -> str:
+    """PDF object name: '<Name> (<Student ID>)', both sanitized."""
+    safe_name = _sanitize(name) or "candidate"
+    safe_id = _sanitize(student_id)
+    return f"{safe_name} ({safe_id})" if safe_id else safe_name
 
 
 def _process_one(row: dict, sb: SupabaseClient, workdir: Path) -> bool:
@@ -51,7 +65,9 @@ def _process_one(row: dict, sb: SupabaseClient, workdir: Path) -> bool:
     )
 
     pdf_path = render_pdf(context, workdir / f"{submission_id}.pdf")
-    storage_path, pdf_url = sb.upload_pdf(pdf_path, submission_id)
+    storage_path, pdf_url = sb.upload_pdf(
+        pdf_path, _report_basename(row.get("name", ""), row.get("student_id", ""))
+    )
 
     sb.upsert_result(
         {
