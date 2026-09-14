@@ -12,15 +12,15 @@ interface SectionAProps {
   onChange: (data: SectionAData) => void;
 }
 
-export const STUDENT_ID_RE = /^\d{6}$/;
+export const STUDENT_ID_RE = /^\d{8}$/;
 
-/** Section A — identification. Name + a 6-digit Student ID. */
+/** Section A — identification. Name + a 8-digit Student ID. */
 export default function SectionA({ data, onChange }: SectionAProps) {
   const [idTouched, setIdTouched] = useState(false);
 
-  // Keep only digits, max 6.
+  // Keep only digits, max 8.
   function handleId(value: string) {
-    onChange({ ...data, studentId: value.replace(/\D/g, "").slice(0, 6) });
+    onChange({ ...data, studentId: value.replace(/\D/g, "").slice(0, 8) });
   }
 
   const idInvalid = data.studentId.length > 0 && !STUDENT_ID_RE.test(data.studentId);
@@ -60,7 +60,7 @@ export default function SectionA({ data, onChange }: SectionAProps) {
             inputMode="numeric"
             autoComplete="off"
             maxLength={6}
-            placeholder="e.g. 210456"
+            placeholder="e.g. 21045678"
             value={data.studentId}
             onChange={(e) => handleId(e.target.value)}
             onBlur={() => setIdTouched(true)}
