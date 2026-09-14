@@ -15,6 +15,15 @@ export default function Home() {
           <span className="mono">8–12 minutes</span>.
         </p>
 
+        <p
+          className="mt-6 text-sm pl-4"
+          style={{ color: "var(--fg-2)", borderLeft: "2px solid var(--accent)" }}
+        >
+          There are no right or wrong answers, and this isn&apos;t a pass-or-fail
+          test — it just helps us get to know you a little before we meet. Please
+          answer as honestly as you can.
+        </p>
+
         <ol className="mt-10 space-y-5">
           <Step n="01" title="Who you are" body="Your name and student ID." />
           <Step

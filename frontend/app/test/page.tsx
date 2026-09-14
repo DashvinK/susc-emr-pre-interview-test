@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProgressBar from "@/components/ProgressBar";
-import SectionA, { type SectionAData } from "@/components/SectionA";
+import SectionA, { type SectionAData, STUDENT_ID_RE } from "@/components/SectionA";
 import SectionB from "@/components/SectionB";
 import SectionC from "@/components/SectionC";
 import { buildDisplayOrder, randomCheckPosition, SCORED_ITEMS } from "@/lib/itemsConfig";
@@ -54,7 +54,7 @@ export default function TestPage() {
   // Per-step validation — the Continue/Submit button is disabled until it passes.
   const stepValid = useMemo(() => {
     if (step === 1) {
-      return sectionA.name.trim() !== "" && sectionA.studentId.trim() !== "";
+      return sectionA.name.trim() !== "" && STUDENT_ID_RE.test(sectionA.studentId.trim());
     }
     if (step === 2) {
       return displayItems.every((it) => answers[it.id] != null);

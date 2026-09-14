@@ -5,7 +5,10 @@ import { z } from "zod";
 export const SubmissionSchema = z.object({
   submission_id: z.string().min(1).max(64),
   name: z.string().trim().min(1).max(200),
-  student_id: z.string().trim().min(1).max(64),
+  student_id: z
+    .string()
+    .trim()
+    .regex(/^\d{6}$/, "Student ID must be exactly 6 digits"),
   answers: z
     .array(
       z.object({
