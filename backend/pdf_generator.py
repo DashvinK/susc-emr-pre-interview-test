@@ -1,4 +1,5 @@
-"""Render a one-page A4 candidate summary PDF via WeasyPrint (build spec §12)."""
+"""Render the candidate summary PDF via WeasyPrint. Full content, flowing across
+as many A4 pages as it needs (build spec §12)."""
 from __future__ import annotations
 
 import logging
@@ -17,24 +18,12 @@ _env = Environment(
     autoescape=select_autoescape(["html", "xml"]),  # escapes candidate free-text
 )
 
-# Keep written answers compact so the summary stays on one A4 page; the full text
-# always lives in the database. These caps bound the worst-case page height.
-_ANSWER_CLIP = 210
-_SUMMARY_CLIP = 680  # fit_summary / c_review ceiling
-
 _C_QUESTIONS = [
     "A time you failed or fell short",
     "Ownership taken without being asked",
     "Response to critical feedback",
     "An area to grow in, and SUSC's part in it",
 ]
-
-
-def _clip(text: str, limit: int = _ANSWER_CLIP) -> str:
-    text = (text or "").strip()
-    if len(text) <= limit:
-        return text
-    return text[: limit - 1].rstrip() + "…"
 
 
 def _marker_pct(score: float) -> float:
@@ -88,7 +77,7 @@ def build_context(
             }
         )
     written_items = [
-        {"q": q, "a": _clip(written.get(f"c{i + 1}", ""))}
+        {"q": q, "a": (written.get(f"c{i + 1}", "") or "").strip()}
         for i, q in enumerate(_C_QUESTIONS)
     ]
     return {
@@ -99,8 +88,8 @@ def build_context(
         "attention_flag": score.attention_flag,
         "rush_flag": score.rush_flag,
         "avg_ms": score.avg_ms,
-        "fit_summary": _clip(fit_summary, _SUMMARY_CLIP),
-        "c_review": _clip(c_review, _SUMMARY_CLIP),
+        "fit_summary": (fit_summary or "").strip(),
+        "c_review": (c_review or "").strip(),
         "written": written_items,
         "panel_prompts": _panel_prompts(score),
     }

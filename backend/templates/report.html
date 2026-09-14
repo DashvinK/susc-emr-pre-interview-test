@@ -14,7 +14,7 @@
     --line:#D9DEE7; --line-strong:#C3CAD6; --track:#E7E3D8;
     --pass-bg:#EAF3EA; --pass-fg:#2C5F3E; --flag-bg:#FBF1DC; --flag-fg:#8A6A16;
   }
-  @page{ size:A4; margin:0; }
+  @page{ size:A4; margin:14mm; }
   *{ box-sizing:border-box; }
   html,body{ margin:0; padding:0; }
   body{
@@ -23,8 +23,13 @@
   }
   .mono{ font-family:"IBM Plex Mono","Courier New",monospace; }
 
-  /* Header band */
-  header{ background:var(--navy-900); color:#fff; padding:8mm 12mm 6mm; }
+  /* Break control for multi-page flow */
+  h2{ break-after:avoid; }
+  .trait, .qa, .note, .flags-row{ break-inside:avoid; }
+
+  /* Header card — a contained navy band within the page margins (reliable in
+     WeasyPrint; only appears on page 1). */
+  header{ background:var(--navy-900); color:#fff; padding:8mm 9mm; margin-bottom:6mm; border-radius:4pt; }
   .brand{ display:table; width:100%; }
   .brand .name{ display:table-cell; text-align:left; vertical-align:baseline;
     font-family:"Fraunces","Georgia",serif; font-size:12pt; letter-spacing:.02em; }
@@ -38,15 +43,15 @@
     font-size:8pt; color:#C9CFDD; }
   .who .meta b{ color:#fff; font-weight:500; }
 
-  .body{ padding:6mm 12mm 0; }
-  h2{ font-family:"Fraunces",serif; font-size:11pt; color:var(--navy-900); margin:0 0 2.5mm; }
-  section{ margin-top:4.5mm; }
+  .body{ padding:0; }
+  h2{ font-family:"Fraunces",serif; font-size:11pt; color:var(--navy-900); margin:0 0 3mm; }
+  section{ margin-top:6mm; }
   section.first{ margin-top:0; }
 
   /* Big Five — fixed CSS table: name | bar | value.
      table-layout:fixed is essential — WeasyPrint's auto layout otherwise
      collapses the bar column to zero width. */
-  .trait{ display:table; width:100%; table-layout:fixed; margin:1.6mm 0; }
+  .trait{ display:table; width:100%; table-layout:fixed; margin:1.8mm 0; }
   .trait .tname{ display:table-cell; width:37mm; vertical-align:middle; font-size:9pt; }
   .trait .bar{ display:table-cell; width:auto; vertical-align:middle; padding:0 3mm; }
   .trait .groove{ display:block; width:100%; height:3pt; background:var(--track); border-radius:2pt; }
@@ -69,18 +74,18 @@
   .prose{ font-size:9pt; margin:0; }
 
   /* Section C */
-  .qa{ margin-top:2mm; padding-left:3mm; border-left:1.5pt solid var(--line-strong); }
+  .qa{ margin-top:2.5mm; padding-left:3mm; border-left:1.5pt solid var(--line-strong); }
   .qa .q{ font-size:7.5pt; letter-spacing:.04em; text-transform:uppercase;
     color:var(--navy-700); font-family:"IBM Plex Mono",monospace; }
   .qa .a{ font-size:8.5pt; margin-top:.6mm; }
   .qa .a.empty{ color:var(--line-strong); font-style:italic; }
-  .note{ margin-top:2mm; background:var(--paper); border:1pt solid var(--line);
-    border-radius:3pt; padding:2.5mm 3mm; font-size:8.5pt; }
+  .note{ margin-top:3mm; background:var(--paper); border:1pt solid var(--line);
+    border-radius:3pt; padding:3mm 3.5mm; font-size:8.5pt; }
   .note .lbl{ font-size:7.5pt; letter-spacing:.06em; text-transform:uppercase;
     color:var(--gold-700); font-family:"IBM Plex Mono",monospace; margin-bottom:1mm; }
 
   /* Panel footer */
-  .panel{ margin:4.5mm 12mm 0; padding-top:3mm; border-top:1.5pt solid var(--line); }
+  .panel{ margin:6mm 0 0; padding-top:4mm; border-top:1.5pt solid var(--line); }
   .panel .lbl{ font-size:7.5pt; letter-spacing:.06em; text-transform:uppercase;
     color:var(--navy-700); font-family:"IBM Plex Mono",monospace; }
   .panel ul{ margin:2mm 0 0; padding-left:4.5mm; font-size:8.5pt; }
@@ -121,7 +126,7 @@
 
     <section>
       <h2>Flags</h2>
-      <div>
+      <div class="flags-row">
         {% if attention_flag == "pass" %}
         <span class="badge badge-pass"><span class="dot"></span><span class="txt">Attention check passed</span></span>
         {% else %}
